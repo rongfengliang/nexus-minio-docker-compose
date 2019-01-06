@@ -1,0 +1,21 @@
+version: "3"
+services:
+  nexus:
+    image: sonatype/nexus3
+    ports:
+    - "8081:8081"
+    volumes:
+    - ./nexus-data:/nexus-data
+    depends_on:
+    - s3
+  s3:
+    image: minio/minio
+    command: server /export
+    ports:
+    - "9000:9000"
+    volumes:
+      - ./data:/data
+      - ./config:/root/.minio
+    environment:
+    - "MINIO_ACCESS_KEY=dalongapp"
+    - "MINIO_SECRET_KEY=dalongapp"
